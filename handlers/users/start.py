@@ -5,9 +5,9 @@ from aiogram.dispatcher.filters.builtin import CommandStart
 
 from data.config import ADMINS
 from loader import dp, db, bot
+from aiogram.dispatcher import FSMContext
 
-
-@dp.message_handler(CommandStart())
+@dp.message_handler(CommandStart(), state="*")
 async def bot_start(message: types.Message):
     name = message.from_user.full_name
     # Foydalanuvchini bazaga qo'shamiz
@@ -23,3 +23,8 @@ async def bot_start(message: types.Message):
     except sqlite3.IntegrityError as err:
         await bot.send_message(chat_id=ADMINS[0], text=f"{name} bazaga oldin qo'shilgan")
         await message.answer(f"Xush kelibsiz! {name}")
+
+# @dp.message_handler(CommandStart(), state=Pytube.Take_link)
+# async def want(message: types.Message, state: FSMContext):
+#     await message.answer('Send the link of the video you want to download')
+#     await Pytube.Choose_quality.set()
